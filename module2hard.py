@@ -6,7 +6,7 @@ TRY_NUMBER_START = 1        # Начало интервала чисел для 
 def main():
     try:
         print(f'Пароль: {password_for(get_first_number())}')
-    except IOError:
+    except ValueError:
         print('Если не можете ввести правильное первое число, Вам кирдык!')
 
 # Возвращает "пары чисел друг за другом, чтобы число из первой вставки было кратно сумме их значений."
@@ -24,7 +24,7 @@ def get_first_number():
     first_number = int(input('Первое число: '))
     if (FIRST_NUMBER_START <= first_number <= FIRST_NUMBER_END):
         return first_number
-    raise IOError
+    raise ValueError
 
 # Вспомогательная функция для проверки работы password_for(number)
 def print_all_passwords():
