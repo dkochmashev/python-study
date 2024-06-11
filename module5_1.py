@@ -13,7 +13,7 @@ class House:
             raise ValueError
 
     def _validate_floor_value(self, floor):
-        # Номер этажа (число этажей) должно быть целым положительным числом
+        # Номер этажа или число этажей должны быть целым положительным числом
         if isinstance(floor, int) and floor > 0:
             return floor
         return 0
