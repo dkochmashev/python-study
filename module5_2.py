@@ -70,6 +70,10 @@ class ResizableBuilding(Building):
     '''
     Строение, способное на лету изменять (достраивать недостающее или уничтожать лишнее) число этажей
     '''
+    def __init__(self, floorBuilder):
+        super().__init__()
+        self.builder = floorBuilder
+
     def setNewNumberOfFloors(self, floors):
         # Проверяем корректность значения аргумента через вызов виртуального метода isValidFloorNumberInput()
         if not self.isValidFloorNumberInput(floors):
@@ -82,10 +86,14 @@ class ResizableBuilding(Building):
             return False
         # Этажей становится БОЛЬШЕ, чем есть сейчас
         if abs(floors) > abs(currentFloorCount):
-            self.buildNewFloors(floors - currentFloorCount)
+            super().setNewNumberOfFloors(
+                self.builder.buildNewFloors(self.getNumberOfFloors(), floors - currentFloorCount)
+            )
         # Этажей становится МЕНЬШЕ, чем есть сейчас
         else:
-            self.destroyUnusedFloors(currentFloorCount - floors)
+            super().setNewNumberOfFloors(
+                self.builder.destroyUnusedFloors(self.getNumberOfFloors(), currentFloorCount - floors)
+            )
         # Число этажей изменилось
         return True
 
@@ -93,45 +101,41 @@ class FloorBuilder:
     '''
     Бригада строителей абстрактных этажей
     '''
-    def buildNewFloors(self, numberOfFloorsToAdd):
-        currentFloorCount = self.getNumberOfFloors()
+    def __init__(self, **kwargs):
+        self.floorBuildMessage = kwargs['floorBuildMessage']
+        self.floorDestroyMessage = kwargs['floorDestroyMessage']
+        self.floorNumberSign = kwargs['floorNumberSign']
+
+    def buildNewFloors(self, currentFloorCount, numberOfFloorsToAdd):
         for newFloorNumber in range(numberOfFloorsToAdd):
             print(self.floorBuildMessage, (currentFloorCount + newFloorNumber + 1) * self.floorNumberSign)
-        Building.setNewNumberOfFloors(self, currentFloorCount + numberOfFloorsToAdd)
+        return currentFloorCount + numberOfFloorsToAdd
 
-    def destroyUnusedFloors(self, numberOfFloorsToDestroy):
-        currentFloorCount = self.getNumberOfFloors()
+    def destroyUnusedFloors(self, currentFloorCount, numberOfFloorsToDestroy):
         for destroyedFloorNumber in range(numberOfFloorsToDestroy):
             print(self.floorDestroyMessage, (currentFloorCount - destroyedFloorNumber) * self.floorNumberSign)
-        Building.setNewNumberOfFloors(self, currentFloorCount - numberOfFloorsToDestroy)
+        return currentFloorCount - numberOfFloorsToDestroy
 
-class HouseBuilder(FloorBuilder):
-    '''
-    Бригада строителей домов
-    '''
-    floorBuildMessage = 'Быстренько достраиваем этаж'
-    floorDestroyMessage = 'Превращаем в прах этаж'
-    floorNumberSign = 1
-
-class BunkerBuilder(FloorBuilder):
-    '''
-    Бригада копателей бункеров
-    '''
-    floorBuildMessage = 'Бодро копаем этаж'
-    floorDestroyMessage = 'Заваливаем грунтом этаж'
-    floorNumberSign = -1
-
-class House(ResizableBuilding, HouseBuilder):
+class House(ResizableBuilding):
     '''
     Многоэтажный жилой дом в комплекте с бригадой строителей,
     автоматически подстраивающих его под желаемые размеры
     '''
+    def __init__(self):
+        super().__init__(
+            FloorBuilder(
+                floorBuildMessage='Быстренько достраиваем этаж',
+                floorDestroyMessage='Превращаем в прах этаж',
+                floorNumberSign=1
+            )
+        )
+
     # Переопределение данного метода требуется для перехвата попыток изменения
     # числа этажей втихаря, т.е. минуя этап их строительства.
     def __setattr__(self, key, value):
         # Перехватываем попытки изменения ключевого свойства объекта в обход интерфейса класса
         if key == 'numberOfFloors':
-            if super().setNewNumberOfFloors(value):
+            if ResizableBuilding.setNewNumberOfFloors(self, value):
                 print('Теперь у дома', self.spellNumberOfFloors())
             else:
                 print('У дома по прежнему', self.spellNumberOfFloors())
@@ -150,17 +154,26 @@ class House(ResizableBuilding, HouseBuilder):
         self.numberOfFloors = floors
 
 
-class Bunker(ResizableBuilding, BunkerBuilder):
+class Bunker(ResizableBuilding, FloorBuilder):
     '''
     Многоуровневый бункер в комплекте с бригадой землекопов,
     автоматически подстраивающих его под желаемые размеры
     '''
+    def __init__(self):
+        super().__init__(
+            FloorBuilder(
+                floorBuildMessage = 'Бодро копаем этаж',
+                floorDestroyMessage = 'Заваливаем грунтом этаж',
+                floorNumberSign = -1
+            )
+        )
+
     # Переопределение данного метода требуется для перехвата попыток изменения
     # числа этажей втихаря, т.е. минуя этап их строительства.
     def __setattr__(self, key, value):
         # Перехватываем попытки изменения ключевого свойства объекта в обход интерфейса класса
         if key == 'numberOfFloors':
-            if super().setNewNumberOfFloors(value):
+            if ResizableBuilding.setNewNumberOfFloors(self, value):
                 print('Теперь у бункера', self.spellNumberOfFloors())
             else:
                 print('У бункера по прежнему', self.spellNumberOfFloors())
