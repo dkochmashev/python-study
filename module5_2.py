@@ -42,6 +42,8 @@ class Building:
     def setNewNumberOfFloors(self, floors):
         if self.isValidFloorNumberInput(floors):
             self.__numberOfFloors = floors
+            return True
+        return False
 
     def isValidFloorNumberInput(self, floorNumber):
         # Номер этажа или число этажей не должны быть отрицательными
@@ -75,7 +77,7 @@ class ResizableBuilding(Building):
         self.builder = floorBuilder
 
     def setNewNumberOfFloors(self, floors):
-        # Проверяем корректность значения аргумента через вызов виртуального метода isValidFloorNumberInput()
+        # Проверяем корректность значения аргумента
         if not self.isValidFloorNumberInput(floors):
             return False
 
@@ -84,6 +86,7 @@ class ResizableBuilding(Building):
         # Кол-во этажей без изменений
         if floors == currentFloorCount:
             return False
+
         # Этажей становится БОЛЬШЕ, чем есть сейчас
         if abs(floors) > abs(currentFloorCount):
             super().setNewNumberOfFloors(
@@ -135,12 +138,13 @@ class House(ResizableBuilding):
     def __setattr__(self, key, value):
         # Перехватываем попытки изменения ключевого свойства объекта в обход интерфейса класса
         if key == 'numberOfFloors':
-            if ResizableBuilding.setNewNumberOfFloors(self, value):
+            if super().setNewNumberOfFloors(value):
                 print('Теперь у дома', self.spellNumberOfFloors())
             else:
                 print('У дома по прежнему', self.spellNumberOfFloors())
         # Для изменения всех остальных свойств объекта вызываем соответствующий метод базового класса
-        return super().__setattr__(key, value)
+        else:
+            super().__setattr__(key, value)
 
     # Представление объекта в виде строки
     def __str__(self):
@@ -154,7 +158,7 @@ class House(ResizableBuilding):
         self.numberOfFloors = floors
 
 
-class Bunker(ResizableBuilding, FloorBuilder):
+class Bunker(ResizableBuilding):
     '''
     Многоуровневый бункер в комплекте с бригадой землекопов,
     автоматически подстраивающих его под желаемые размеры
@@ -173,12 +177,13 @@ class Bunker(ResizableBuilding, FloorBuilder):
     def __setattr__(self, key, value):
         # Перехватываем попытки изменения ключевого свойства объекта в обход интерфейса класса
         if key == 'numberOfFloors':
-            if ResizableBuilding.setNewNumberOfFloors(self, value):
+            if super().setNewNumberOfFloors(value):
                 print('Теперь у бункера', self.spellNumberOfFloors())
             else:
                 print('У бункера по прежнему', self.spellNumberOfFloors())
         # Для изменения всех остальных свойств объекта вызываем соответствующий метод базового класса
-        return super().__setattr__(key, value)
+        else:
+            super().__setattr__(key, value)
 
     # Представление объекта в виде строки
     def __str__(self):
