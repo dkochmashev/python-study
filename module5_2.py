@@ -36,8 +36,7 @@ class Building:
         return self.__numberOfFloors
 
     def setNewNumberOfFloors(self, floors):
-        if self.isValidFloorNumberInput(floors):
-            self.__numberOfFloors = floors
+        self.__numberOfFloors = floors
 
     # Формирует число этажей прописью
     def spellNumberOfFloors(self):
@@ -248,7 +247,7 @@ bunker.setNewNumberOfFloors(0)
 
 narrative("Ну и т.д.")
 bunker.numberOfFloors = -5
-bunker.numberOfFloors = -5
+bunker.numberOfFloors = 5
 print(bunker)
 
 narrative("\nНа этом всё...")
