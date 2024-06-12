@@ -29,6 +29,9 @@ class Building:
     def __init__(self):
         self.__numberOfFloors = 0
 
+    def __len__(self):
+        return abs(self.__numberOfFloors)
+
     def getNumberOfFloors(self):
         return self.__numberOfFloors
 
@@ -231,7 +234,8 @@ print(bunker)
 narrative("Копали бункер вчетвером:\n"
           "Иван, Василий, лом, лопата\n"
           "Был результат наш - о-го-го!")
-bunker.setNewNumberOfFloors(-3)
+bunker.setNewNumberOfFloors(-10)
+print('Выкопано', len(bunker), 'этажей!!!')
 
 narrative("И даже мы перестарались.")
 bunker.setNewNumberOfFloors(-2)
