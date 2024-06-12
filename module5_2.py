@@ -28,15 +28,26 @@ class Building:
 
     def __init__(self):
         self.__numberOfFloors = 0
+        print('Подготовлена строительная площадка')
 
     def __len__(self):
-        return abs(self.__numberOfFloors)
+        return self.__numberOfFloors
+
+    def __del__(self):
+        print('Строение уничтожено')
 
     def getNumberOfFloors(self):
         return self.__numberOfFloors
 
     def setNewNumberOfFloors(self, floors):
-        self.__numberOfFloors = floors
+        if self.isValidFloorNumberInput(floors):
+            self.__numberOfFloors = floors
+
+    def isValidFloorNumberInput(self, floorNumber):
+        # Номер этажа или число этажей не должны быть отрицательными
+        if floorNumber >= 0:
+            return True
+        return False
 
     # Формирует число этажей прописью
     def spellNumberOfFloors(self):
@@ -78,38 +89,37 @@ class ResizableBuilding(Building):
         # Число этажей изменилось
         return True
 
-class HouseBuilder:
+class FloorBuilder:
     '''
-    Бригада строителей домов
+    Бригада строителей абстрактных этажей
     '''
     def buildNewFloors(self, numberOfFloorsToAdd):
         currentFloorCount = self.getNumberOfFloors()
         for newFloorNumber in range(numberOfFloorsToAdd):
-            print('Быстренько достраиваем этаж', currentFloorCount + newFloorNumber + 1)
+            print(self.floorBuildMessage, (currentFloorCount + newFloorNumber + 1) * self.floorNumberSign)
         Building.setNewNumberOfFloors(self, currentFloorCount + numberOfFloorsToAdd)
 
     def destroyUnusedFloors(self, numberOfFloorsToDestroy):
         currentFloorCount = self.getNumberOfFloors()
         for destroyedFloorNumber in range(numberOfFloorsToDestroy):
-            print('Превращаем в прах этаж', currentFloorCount - destroyedFloorNumber)
+            print(self.floorDestroyMessage, (currentFloorCount - destroyedFloorNumber) * self.floorNumberSign)
         Building.setNewNumberOfFloors(self, currentFloorCount - numberOfFloorsToDestroy)
 
-class BunkerBuilder:
+class HouseBuilder(FloorBuilder):
+    '''
+    Бригада строителей домов
+    '''
+    floorBuildMessage = 'Быстренько достраиваем этаж'
+    floorDestroyMessage = 'Превращаем в прах этаж'
+    floorNumberSign = 1
+
+class BunkerBuilder(FloorBuilder):
     '''
     Бригада копателей бункеров
     '''
-    def buildNewFloors(self, numberOfFloorsToAdd):
-        currentFloorCount = self.getNumberOfFloors()
-        for newFloorNumber in range(0, numberOfFloorsToAdd, -1):
-            print('Быстренько копаем этаж', currentFloorCount + newFloorNumber - 1)
-        Building.setNewNumberOfFloors(self, currentFloorCount + numberOfFloorsToAdd)
-
-    def destroyUnusedFloors(self, numberOfFloorsToDestroy):
-        currentFloorCount = self.getNumberOfFloors()
-        for destroyedFloorNumber in range(0, numberOfFloorsToDestroy, -1):
-            print('Заваливаем грунтом этаж', currentFloorCount - destroyedFloorNumber)
-        Building.setNewNumberOfFloors(self, currentFloorCount - numberOfFloorsToDestroy)
-
+    floorBuildMessage = 'Бодро копаем этаж'
+    floorDestroyMessage = 'Заваливаем грунтом этаж'
+    floorNumberSign = -1
 
 class House(ResizableBuilding, HouseBuilder):
     '''
@@ -132,11 +142,9 @@ class House(ResizableBuilding, HouseBuilder):
     def __str__(self):
         return f'Дом, у которого {self.spellNumberOfFloors()}'
 
-    def isValidFloorNumberInput(self, floorNumber):
-        # Номер этажа или число этажей не должны быть отрицательными
-        if floorNumber >= 0:
-            return True
-        return False
+    def __del__(self):
+        print('Дом снесен')
+        super().__del__()
 
     def setNewNumberOfFloors(self, floors):
         self.numberOfFloors = floors
@@ -163,13 +171,9 @@ class Bunker(ResizableBuilding, BunkerBuilder):
     def __str__(self):
         return f'Бункер, у которого {self.spellNumberOfFloors()}'
 
-    # Что для дома - хорошо, для бункера - наоборот
-    # Переопределяем метод для бункера
-    def isValidFloorNumberInput(self, floorNumber):
-        # Номер этажа или число этажей не должны быть положительными
-        if floorNumber <= 0:
-            return True
-        return False
+    def __del__(self):
+        print('Бункер закопан')
+        super().__del__()
 
     def setNewNumberOfFloors(self, floors):
         self.numberOfFloors = floors
@@ -207,8 +211,14 @@ narrative("Ноль этажей иль дома нет.\n"
           "У нас всего лишь есть фундамент.")
 house.setNewNumberOfFloors(0)
 
-narrative("Решили мы построить дом.\n"
-          "Теперь мы действуем с умом.\n"
+narrative("Начнем мы с чиатого листа,\n"
+          "И уничтожим все былое...")
+del house
+
+narrative("Решили мы построить дом.")
+house = House()
+
+narrative("Теперь мы действуем с умом.\n"
           "Джамшут нам быстро возведёт\n"
           "Тринадцать этажей на счастье!")
 house.setNewNumberOfFloors(13)
@@ -232,12 +242,12 @@ print(bunker)
 
 narrative("Копали бункер вчетвером:\n"
           "Иван, Василий, лом, лопата")
-bunker.setNewNumberOfFloors(-10)
+bunker.setNewNumberOfFloors(10)
 narrative("Был результат наш - о-го-го!")
 print('Выкопано', len(bunker), 'этажей!!!')
 
 narrative("И даже мы перестарались.")
-bunker.setNewNumberOfFloors(-2)
+bunker.setNewNumberOfFloors(2)
 
 narrative("Потом приехал Николай\n"
           "На экскаваторе японском\n"
