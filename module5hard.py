@@ -8,7 +8,7 @@ EXTRA_TESTS = True
 ADULT_AGE = 18
 
 # Скорость воспроизведения видео
-PLAY_SPEED = 1
+DEFAULT_PLAY_SPEED = 1
 
 class Video:
     """
@@ -170,7 +170,7 @@ class UrTube:
                 found.append(video_title)
         return found
 
-    def watch_video(self, title, play_speed = PLAY_SPEED):
+    def watch_video(self, title, play_speed = DEFAULT_PLAY_SPEED):
         """
         Запуск просмотра после проверки соответствия возраста пользователя запрашиваемому видео
         :param title: Строка (str) с названием видео
@@ -185,7 +185,7 @@ class UrTube:
             return
 
         if not video.authorize(self.current_user):
-            print("Вам нет 18 лет, пожалуйста покиньте страницу")
+            print(f"Вам нет {ADULT_AGE} лет, пожалуйста покиньте страницу")
             return
 
         for video_second in range(video.time_now, video.duration, play_speed):
@@ -218,7 +218,7 @@ ur.watch_video('Для чего девушкам парень программи
 if EXTRA_TESTS:
     # Просмотр видео 18+ с трехкратной скоростью (почувствуйте ритм жизни кроликов!)
     ur.watch_video('Для чего девушкам парень программист?', 3)
-    # Разгонимся еще быстрее
+    # Разгонимся еще быстрее. Бесконечность - не предел!
     ur.watch_video('Лучший язык программирования 2024 года', 300)
 
 # Проверка входа в другой аккаунт
