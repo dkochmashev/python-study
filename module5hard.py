@@ -38,16 +38,16 @@ class Video:
         :param play_speed: скорость воспроизведения - размер фрагмента за одну реальную секунду (int)
         :return: фактический размер воспроизведенного фрагмента (int)
         """
+        fragment_size = play_speed
         if self.time_now + play_speed > self.duration:
-            play_speed = self.duration - self.time_now
+            fragment_size = self.duration - self.time_now
 
-        for step in range(play_speed):
+        for step in range(fragment_size):
             self.time_now += 1
             print(self.time_now, end=' ')
+            sleep(1 / play_speed)
 
-        sleep(1)
-
-        return play_speed
+        return fragment_size
 
     def rewind(self, watch_start = 0):
         """
