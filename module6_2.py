@@ -3,8 +3,8 @@ class Vehicle:
 
     def __init__(self, owner, model, color, engine_power):
         self.owner = str(owner)
-        self._model = str(model)
-        self._engine_power = int(engine_power)
+        self.__model = str(model)
+        self.__engine_power = int(engine_power)
         self.set_color(color)
 
     def get_owner(self):
@@ -12,11 +12,11 @@ class Vehicle:
 
     # Возвращает строку: "Модель: <название модели транспорта>"
     def get_model(self):
-        return f'Модель: {self._model}'
+        return f'Модель: {self.__model}'
 
     # Возвращает строку: "Мощность двигателя: <мощность>"
     def get_horsepower(self):
-        return f'Мощность двигателя: {self._engine_power}'
+        return f'Мощность двигателя: {self.__engine_power}'
 
     # Возвращает строку: "Цвет: <цвет транспорта>"
     def get_color(self):
@@ -44,7 +44,7 @@ class Sedan(Vehicle):
     __PASSENGERS_LIMIT = 5
 
 
-# Текущие цвета __COLOR_VARIANTS = ['blue', 'red', 'green', 'black', 'white']
+# Текущие цвета __COLOR_VARIANTS = {'red', 'green', 'blue', 'yellow', 'black', 'white'}
 vehicle1 = Sedan('Fedos', 'Toyota Mark II', 'blue', 500)
 
 # Изначальные свойства
