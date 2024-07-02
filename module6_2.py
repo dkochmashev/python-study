@@ -20,7 +20,7 @@ class Vehicle:
 
     # Возвращает строку: "Цвет: <цвет транспорта>"
     def get_color(self):
-        return f'Цвет: {self._color}'
+        return f'Цвет: {self.__color}'
 
     # Распечатывает результаты методов (в том же порядке):
     # get_model()\n
@@ -36,7 +36,7 @@ class Vehicle:
     def set_color(self, new_color):
         new_color_str = str(new_color).lower()
         if new_color_str in self.__COLOR_VARIANTS:
-            self._color = new_color_str
+            self.__color = new_color_str
         else:
             print(f'Нельзя сменить цвет на {new_color}')
 
