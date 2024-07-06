@@ -133,7 +133,7 @@ class Circle(Figure2D):
         self._radius = self.get_side() / math.pi / 2
 
     def _calc_square(self):
-        self._square = math.pi * self._radius**2
+        self._square = math.pi * self._radius ** 2
 
     def _on_sides_update(self):
         self._calc_perimeter()
@@ -193,10 +193,10 @@ class Sphere(Circle, Figure3D):
         self._perimeter = math.inf
 
     def _calc_square(self):
-        self._square = 4 * math.pi * self._radius**2
+        self._square = 4 * math.pi * self.get_radius() ** 2
 
     def _calc_volume(self):
-        self._volume = 4 / 3 * math.pi**3
+        self._volume = 4 / 3 * math.pi * self.get_radius() ** 3
 
 
 if EXTRA_TESTS:
