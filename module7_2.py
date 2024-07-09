@@ -17,6 +17,7 @@ def custom_write(file_name, strings):
     for line_number, string in enumerate(strings):
         result[(line_number + 1, file.tell())] = string
         file.write(f'{string}\n')
+    file.close()
 
     return result
 
