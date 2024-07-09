@@ -33,7 +33,7 @@ class Shop:
         except:
             return False
 
-        for product_line in file.readlines():
+        for product_line in file:
             product = Product(*product_line.replace('\n', '').split(', '))
             # Добавляем объект из файла, предварительно отключая автосохранение содержимого в файл
             self.add(product, auto_write = False)
