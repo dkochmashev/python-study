@@ -29,8 +29,8 @@ class OSIndependentLineWriter:
     def close(self):
         return self.__file_handle.close()
 
-def open(file_name, *args, **kwargs):
-    return OSIndependentLineWriter(builtins.open(file_name, *args, **kwargs))
+def open(*args, **kwargs):
+    return OSIndependentLineWriter(builtins.open(*args, **kwargs))
 
 def custom_write(file_name, strings):
     result = dict()
