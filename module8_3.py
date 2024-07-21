@@ -1,3 +1,13 @@
+# Общая основа для исключений
+class InvalidCarDataException(BaseException):
+    def __init__(self, message):
+        super().__init__()
+        self.message = message
+
+### ТЗ требует создать отдельный класс для каждого вида ошибок в данных машины
+IncorrectVinNumber = InvalidCarDataException
+IncorrectCarNumbers = InvalidCarDataException
+
 # Класс Car должен обладать следующими свойствами:
 # 1. Атрибут объекта model - название автомобиля (строка).
 # 2. Атрибут объекта __vin - vin номер автомобиля (целое число).
@@ -11,15 +21,6 @@
 #    Уровень доступа private.
 # 6. Классы исключений IncorrectVinNumber и IncorrectCarNumbers, объекты которых обладают
 #    атрибутом message - сообщение, которое будет выводиться при выбрасывании исключения.
-
-class InvalidCarDataException(BaseException):
-    def __init__(self, message):
-        super().__init__()
-        self.message = message
-
-### ТЗ требует создать отдельный класс для каждого вида ошибок в данных машины
-IncorrectVinNumber = InvalidCarDataException
-IncorrectCarNumbers = InvalidCarDataException
 
 class Car:
     def __init__(self, model, vin, numbers):
