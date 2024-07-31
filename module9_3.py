@@ -34,7 +34,7 @@ second_result = (
     ### Если нужен "результат сравнения длин строк", установите PEDANTIC = False
     first[item_index] == second[item_index] if PEDANTIC \
         else len(first[item_index]) == len(second[item_index]) \
-            for item_index in range(0, len(first))
+            for item_index in range(0, min(len(first), len(second)))
 )
 
 print(list(first_result))
