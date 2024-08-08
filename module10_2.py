@@ -12,9 +12,6 @@ class Knight(Thread):
         self.fighting_days = 0
         self.start()
 
-    # def __del__(self):
-    #     self.join()
-
     def __spell_fighting_days(self):
         # Сию летопись будем писать благородным языком!
         if self.fighting_days < 0:
