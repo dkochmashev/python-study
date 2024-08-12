@@ -83,7 +83,7 @@ class MyApp(tk.Tk):
         starting_angle = self._IMAGE_GROWING_STARTING_ANGLE
         target_angle = self._IMAGE_GROWING_TARGET_ANGLE
 
-        if is_growing == False:
+        if not is_growing:
             size = target_size
             size_delta = 1 / size_delta
             target_size = self._IMAGE_SMALLEST_SIZE
@@ -177,7 +177,7 @@ class MyApp(tk.Tk):
 
         return resized
 
-    def __cycle_image_display(self):
+    def __cycle_move_image(self):
         if self.__is_terminating:
             return
 
@@ -187,7 +187,7 @@ class MyApp(tk.Tk):
         else:
             self.__move_image(self.__labels[0])
 
-        self.after(self._IMAGE_CYCLE_TIMEOUT, self.__cycle_image_display)
+        self.after(self._IMAGE_CYCLE_TIMEOUT, self.__cycle_move_image)
 
     def __on_destroy(self):
         if self.__is_terminating:
@@ -196,7 +196,7 @@ class MyApp(tk.Tk):
         for label in self.__labels:
             label.configure(text='')
 
-        self.__cycle_image_display()
+        self.__cycle_move_image()
 
         answer = messagebox.askquestion(title='Как оно?', message='Зачёт? ;-)')
         self.__is_terminating = True
