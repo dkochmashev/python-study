@@ -5,8 +5,10 @@ def is_prime(func):
         result = func(numbers)
         for divider in range(2, result):
             if not result % divider:
-                return 'Составное'
-        return 'Простое'
+                print('Составное')
+                return result
+        print('Простое')
+        return result
     return wrapper
 
 # Функция, которая складывает 3 числа (sum_three)
