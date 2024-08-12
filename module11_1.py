@@ -205,7 +205,6 @@ class MyApp(tk.Tk):
             self.__image_animate_all(0)
             messagebox.showinfo(title='Эмоции', message='Ура!!!')
 
-        self.__is_terminating = True
         self.destroy()
 
 
