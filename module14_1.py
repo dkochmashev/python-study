@@ -12,14 +12,14 @@ if not os.path.exists(DB_FILE):
 db_connection = db.connect(DB_FILE)
 
 db_connection.execute('''
-CREATE TABLE IF NOT EXISTS "Users"(
-	"id"	INTEGER NOT NULL,
-	"username"	TEXT NOT NULL,
-	"email"	TEXT NOT NULL COLLATE NOCASE,
-	"age"	INTEGER,
-	"balance"	INTEGER NOT NULL,
-	PRIMARY KEY("id" AUTOINCREMENT)
-)
+    CREATE TABLE IF NOT EXISTS "Users"(
+        "id"	INTEGER NOT NULL,
+        "username"	TEXT NOT NULL,
+        "email"	TEXT NOT NULL COLLATE NOCASE,
+        "age"	INTEGER,
+        "balance"	INTEGER NOT NULL,
+        PRIMARY KEY("id" AUTOINCREMENT)
+    )
 ''')
 
 
