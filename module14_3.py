@@ -96,7 +96,7 @@ async def get_buying_list(message: Message, state: FSMContext):
             'description': 'Для душевной компании',
             'url': 'https://avatars.dzeninfra.ru/get-zen_doc/5253732/pub_62a256b1195e6c03d36e573b_62a36a19976862692aa54c63/scale_1200'
         }, {
-            'label': 'Идиллия!',
+            'label': 'Идиллия',
             'description': 'Защита от всех невзгод',
             'url': 'https://46tv.ru/uploads/posts/2020-09/1599749657_1595606483_9-p-samogonshchiki-film-55.jpg'
         }
